@@ -1,0 +1,25 @@
+<div>
+    <mat-form-field appearance="outline" (click)="cfdiFile.click()">
+        <mat-label>Archivo cfdi (.xml)</mat-label>
+        <input matInput placeholder="Archivo cfdi (.xml)" value="{{cfdiFile.files[0]?.name}}" readonly>
+        <mat-icon matSuffix color="accent">description</mat-icon>
+        <!-- <mat-hint>Hint</mat-hint> -->
+    </mat-form-field>
+    <input id="cfdiFile" #cfdiFile hidden type="file" name="file" accept=".xml">
+</div>
+<div>
+    <button mat-raised-button color="primary" matTooltip="Timbrar archivo xml del cfdi." (click)="timbrar()">Timbrar</button>
+</div>
+<div *ngIf="responseTimbrado">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Codigo {{responseTimbrado.StatusCode}}</mat-card-title>
+            <mat-card-subtitle>{{responseTimbrado.Message}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="cfdi">
+            <pre>
+                {{responseTimbrado.CFDI | xml}}
+            </pre>
+        </mat-card-content>
+    </mat-card>
+</div>

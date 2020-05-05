@@ -1,0 +1,35 @@
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()" >
+    <div class="form">
+        <mat-form-field>
+            <mat-label>Seleccione una opcion</mat-label>
+            <mat-select formControlName="ws">
+                <mat-option *ngFor="let item of catalogoWS" value="{{item.id}}">{{item.name}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="!formGroup.controls['ws'].valid && formGroup.controls['ws'].touched">
+              {{ getErrorWS() }}
+            </mat-error>
+            <mat-hint>Servicio web de timbrado.</mat-hint>
+          </mat-form-field>
+
+        <mat-form-field appearance="outline" class="pass-field">
+            <mat-label>Usuario</mat-label>
+            <input matInput placeholder="Usuario" type="text" id="usuario"  formControlName="usuario">
+            <mat-icon matSuffix color="accent">person</mat-icon>
+            <mat-hint>Usuario del servicio web.</mat-hint>
+            <mat-error *ngIf="!formGroup.controls['usuario'].valid && formGroup.controls['usuario'].touched">
+              {{ getErrorEmail() }}
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="pass-field">
+            <mat-label>Contraseña</mat-label>
+            <input matInput placeholder="Contraseña" type="password" id="keypass" #keypass  formControlName="password">
+            <mat-icon matSuffix color="accent" (click)="keypass.type=keypass.type=='password'?'text':'password'">visibility</mat-icon>
+            <mat-hint>Contraseña del servicio web.</mat-hint>
+            <mat-error *ngIf="!formGroup.controls['password'].valid && formGroup.controls['password'].touched">
+              {{ getErrorPassword() }}
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" class="guardar">Guardar</button>
+</form>

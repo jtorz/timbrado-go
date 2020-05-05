@@ -1,0 +1,44 @@
+<div class="file-upload">
+    <div class="load-input cert">
+        <mat-form-field appearance="outline" (click)="certFile.click()">
+            <mat-label>Archivo de certificado (.cer)</mat-label>
+            <input matInput placeholder="Archivo de certificado (.cer)" value="{{certFile.files[0]?.name}}" readonly>
+            <mat-icon matSuffix color="accent">description</mat-icon>
+            <!-- <mat-hint>Hint</mat-hint> -->
+        </mat-form-field>
+        <input id="certFile" #certFile hidden type="file" name="file" accept=".cer">
+        <button mat-icon-button color="primary" matTooltip="Cargar archivo de certificado del SAT."><mat-icon class="animate" (click)="loadCer($event)">sync</mat-icon></button>
+    </div>
+
+    <div class="load-input key">
+        <mat-form-field appearance="outline" (click)="keyFile.click()">
+            <mat-label>Archivo de llave (.key)</mat-label>
+            <input matInput placeholder="Archivo de llave (.key)" value="{{keyFile.files[0]?.name}}" readonly>
+            <mat-icon matSuffix color="accent">https</mat-icon>
+            <!-- <mat-hint>Hint</mat-hint> -->
+        </mat-form-field>
+        <input id="keyFile" #keyFile hidden type="file" name="file" accept=".key">
+
+        <mat-form-field appearance="outline" class="pass-field">
+            <mat-label>Contraseña</mat-label>
+            <input matInput placeholder="Contraseña" type="password" id="keypass" #keypass>
+            <mat-icon matSuffix color="accent" (click)="keypass.type=keypass.type=='password'?'text':'password'" class="view-pass" >visibility</mat-icon>
+            <!-- <mat-hint>Hint</mat-hint> -->
+        </mat-form-field>
+        <button mat-icon-button color="primary" matTooltip="Cargar llave de certificado del SAT."><mat-icon class="animate" (click)="loadKey($event)">sync</mat-icon></button>
+    </div>
+</div>
+
+<mat-card *ngIf="cert" class="cert-card mat-elevation-z2">
+    <mat-card-header>
+        <div mat-card-avatar class="card-avatar">
+            <img src="/assets/images/cert.png" alt="Cert">
+        </div>
+        <mat-card-title>Certificado</mat-card-title>
+        <mat-card-subtitle>{{cert.serialNumber}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <p><b>Receptor: </b> {{cert.receptor.cn}}</p>
+        <p><b>Emisor: </b> {{cert.emisor.cn}}</p>
+    </mat-card-content>
+</mat-card>

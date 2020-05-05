@@ -1,0 +1,51 @@
+@import '~src/utils';
+
+.file-upload {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    .load-input {
+        align-items: center;
+        &.key{
+            .pass-field{
+                margin-left: 1rem;
+            }
+        }
+    }
+
+    ::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
+        padding: 0 !important;
+    }
+}
+
+.card-avatar {
+    img {
+        max-width: 40px;
+        max-height: 40px;
+    }
+}
+
+.mat-card-header {
+    .mat-card-title {
+        margin-bottom:.2rem;
+    }
+    .mat-card-subtitle {
+        margin: 0;
+    }
+
+    align-items: center;
+}
+
+.mat-icon{
+    &.spin-animation{
+        @include animation(spin, 10s, ease-in);
+    }
+}
+
+.cert-card{
+    max-width: 350px;
+    margin: 10px;
+}
+
+

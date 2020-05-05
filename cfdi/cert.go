@@ -46,6 +46,16 @@ func LoadCert(certFile, keyFile string, pass []byte) error {
 	if err != nil {
 		return err
 	}
+
+	SetCert(cf)
+	if err != nil {
+		return err
+	}
+	return SetKey(kf, pass)
+}
+
+// SetCert configura la informacion del certificado.
+func SetCert(cf []byte) (err error) {
 	X509Cert, err = x509.ParseCertificate(cf)
 	if err != nil {
 		return err
@@ -53,7 +63,11 @@ func LoadCert(certFile, keyFile string, pass []byte) error {
 
 	Cert = base64.StdEncoding.EncodeToString(cf)
 	decodeNoCert()
+	return nil
+}
 
+// SetKey configura la llave del certificado.
+func SetKey(kf []byte, pass []byte) (err error) {
 	v, err := pkcs8.ParsePKCS8PrivateKey(kf, pass)
 	if err != nil {
 		return err
