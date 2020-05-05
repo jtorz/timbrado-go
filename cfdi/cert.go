@@ -21,7 +21,7 @@ import (
 )
 
 // CadenaOriginalPath ruta donde se encuentra el archivo xslt de la cadena original.
-var CadenaOriginalPath = "assets/xslt/cadenaoriginal_3_3.xslt"
+var CadenaOriginalPath = os.Getenv("TIMBRADO-ROOT") + "/assets/xslt/cadenaoriginal_3_3.xslt"
 
 // Cert cadena del certificado del SAT.
 var Cert string

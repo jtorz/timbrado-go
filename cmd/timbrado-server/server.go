@@ -33,9 +33,8 @@ func init() {
 	}
 }
 func main() {
-
-	keyPath := flag.String("key", "assets/certificate.key", "ruta donde se encuentra el archivo .key del certificado del SAT")
-	certPath := flag.String("cert", "assets/certificate.cer", "ruta donde se encuentra el archivo .cer del certificado del SAT")
+	keyPath := flag.String("key", os.Getenv("TIMBRADO-ROOT")+"/assets/certificate.key", "ruta donde se encuentra el archivo .key del certificado del SAT")
+	certPath := flag.String("cert", os.Getenv("TIMBRADO-ROOT")+"/assets/certificate.cer", "ruta donde se encuentra el archivo .cer del certificado del SAT")
 	certpass := flag.String("certpass", "12345678a", "password de la llave del certificado del sat")
 	err := cfdi.LoadCert(*certPath, *keyPath, []byte(*certpass))
 	if err != nil {
@@ -44,7 +43,7 @@ func main() {
 
 	r := gin.Default()
 
-	r.Use(static.Serve("/", static.LocalFile("./client/dist", true)))
+	r.Use(static.Serve("/", static.LocalFile(os.Getenv("TIMBRADO-ROOT")+"/client/dist", true)))
 	api(r.Group("/api"))
 	r.Run(":3000")
 }
@@ -218,7 +217,7 @@ func timbrar(c *gin.Context) {
 	ws := selectWS()
 	cfdiFile, err := cfdi.Sellar(cfdiPath)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, err.Error)
+		c.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
 
