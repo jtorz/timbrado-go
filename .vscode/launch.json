@@ -11,7 +11,16 @@
             "mode": "auto",
             "program": "${workspaceFolder}/cmd/timbrado-server",
             "env": {
-                "TIMBRADO-ROOT":"${workspaceFolder}",
+                "TIMBRADO_ROOT":"${workspaceFolder}",
+                "TIMBRADO_PORT":":3000",
+            },
+            "windows": {
+                "env": {
+                    "TIMBRADO_OUT": "c:/timbrado"
+                }
+            },
+            "linux": {
+                "TIMBRADO_OUT": "$HOME/timbrado"
             },
             "args": ["-v"],
             "cwd": "."

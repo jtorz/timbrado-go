@@ -35,4 +35,9 @@ export class TimbradoResponse {
     StatusCode: string;
     Message: string;
     CFDI: string;
+    constructor(){
+        this.StatusCode = '';
+        this.Message = '';
+        this.CFDI = '';
+    }
 }

@@ -13,3 +13,7 @@
 
 local/
 test/
+tools/xslt/
+client-dist/
+cmd/timbrado-server/__debug_bin
+dist.zip

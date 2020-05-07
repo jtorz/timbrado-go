@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"io"
@@ -13,28 +14,33 @@ import (
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/jtorz/timbrado-golang/cfdi"
+	"github.com/jtorz/timbrado-golang/config"
 	"github.com/jtorz/timbrado-golang/timbrado"
 	"github.com/jtorz/timbrado-golang/timbrado/facturehoy"
 	"github.com/jtorz/timbrado-golang/timbrado/solucionfactible"
 	"github.com/jtorz/timbrado-golang/timbrado/timbox"
 )
 
-const carpetaTimbrado = "c:/timbrado"
-
 func init() {
-	_, err := os.Stat(carpetaTimbrado)
-
+	_, err := os.Stat(config.XMLOutDir)
 	if os.IsNotExist(err) {
-		errDir := os.MkdirAll(carpetaTimbrado, 0755)
+		errDir := os.MkdirAll(config.XMLOutDir, 0755)
 		if errDir != nil {
-			log.Fatal(err)
+			log.Printf("no se pudo crear directorio de salida %s", err.Error())
+			fmt.Print("Presione enter para salir.")
+			bufio.NewReader(os.Stdin).ReadBytes('\n')
+			os.Exit(1)
 		}
-
 	}
 }
+
 func main() {
-	keyPath := flag.String("key", os.Getenv("TIMBRADO-ROOT")+"/assets/certificate.key", "ruta donde se encuentra el archivo .key del certificado del SAT")
-	certPath := flag.String("cert", os.Getenv("TIMBRADO-ROOT")+"/assets/certificate.cer", "ruta donde se encuentra el archivo .cer del certificado del SAT")
+	defer func() {
+		fmt.Print("Presione enter para salir.")
+		bufio.NewReader(os.Stdin).ReadBytes('\n')
+	}()
+	keyPath := flag.String("key", config.RootDir+"/assets/certificate.key", "ruta donde se encuentra el archivo .key del certificado del SAT")
+	certPath := flag.String("cert", config.RootDir+"/assets/certificate.cer", "ruta donde se encuentra el archivo .cer del certificado del SAT")
 	certpass := flag.String("certpass", "12345678a", "password de la llave del certificado del sat")
 	err := cfdi.LoadCert(*certPath, *keyPath, []byte(*certpass))
 	if err != nil {
@@ -43,9 +49,9 @@ func main() {
 
 	r := gin.Default()
 
-	r.Use(static.Serve("/", static.LocalFile(os.Getenv("TIMBRADO-ROOT")+"/client/dist", true)))
+	r.Use(static.Serve("/", static.LocalFile(config.ClientDist, true)))
 	api(r.Group("/api"))
-	r.Run(":3000")
+	r.Run(config.ServerPort)
 }
 
 func api(r *gin.RouterGroup) {
@@ -195,7 +201,8 @@ func timbrar(c *gin.Context) {
 		return
 	}
 	defer src.Close()
-	cfdiPath := carpetaTimbrado + "/" + time.Now().Format("2006_01_02T15_04_05")
+
+	cfdiPath := config.XMLOutDir + "/" + time.Now().Format("2006_01_02T15_04_05.000000000")
 
 	f, err := os.OpenFile(cfdiPath, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {

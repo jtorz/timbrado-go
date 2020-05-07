@@ -17,11 +17,9 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/jtorz/timbrado-golang/config"
 	"github.com/youmark/pkcs8"
 )
-
-// CadenaOriginalPath ruta donde se encuentra el archivo xslt de la cadena original.
-var CadenaOriginalPath = os.Getenv("TIMBRADO-ROOT") + "/assets/xslt/cadenaoriginal_3_3.xslt"
 
 // Cert cadena del certificado del SAT.
 var Cert string
@@ -143,12 +141,10 @@ func generarSello(cfdiFile string) (string, error) {
 // GeneraCadenaOriginal genera la cadena original con el archivo xslt.
 func GeneraCadenaOriginal(cfdiFile string) ([]byte, error) {
 	cmd := exec.Cmd{
-		Args: []string{"xsltproc", CadenaOriginalPath, cfdiFile},
+		Args: []string{"xsltproc", config.XSLTPath, cfdiFile},
 		Env:  os.Environ(),
-		Path: "xsltproc",
+		Path: config.CMDxsltproc,
 	}
-	fmt.Println(CadenaOriginalPath)
-	fmt.Println(cfdiFile)
 	return cmd.Output()
 }
 
